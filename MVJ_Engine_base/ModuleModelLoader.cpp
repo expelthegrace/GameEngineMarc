@@ -38,17 +38,22 @@ unsigned ModuleModelLoader::GenerateMeshData(const aiMesh* mesh) {
 
 bool ModuleModelLoader::Init() {
 	//On Init method → const aiScene* scene = aiImportFile(file, postprocess_flags); → Used for loading a scene(note that a
-	//	scene is a model)	scene = aiImportFile(".\\Baker_house.fbx", 0);
+	//	scene is a model)
+	scene = aiImportFile("Baker_house.fbx", 0);
 	const char* errorMesage;
-	if (scene == nullptr) errorMesage = aiGetErrorString();
 
-	vbos = new unsigned[scene->mNumMeshes];
-
-	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
-	{
-		vbos[i] = GenerateMeshData(scene->mMeshes[i]);
+	if (scene == nullptr) {
+		errorMesage = aiGetErrorString();
+		LOG(errorMesage);
 	}
+	else {
+		vbos = new unsigned[scene->mNumMeshes];
 
+		for (unsigned i = 0; i < scene->mNumMeshes; ++i)
+		{
+			vbos[i] = GenerateMeshData(scene->mMeshes[i]);
+		}
 
+	}
 	return true;
 }
